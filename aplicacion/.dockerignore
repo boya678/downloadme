@@ -1,0 +1,15 @@
+# Ignorar node_modules ya que se reinstala dentro del contenedor
+node_modules
+npm-debug.log
+
+# Archivos de configuración de tu editor
+.vscode
+.idea
+
+# Git
+.git
+.gitignore
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
