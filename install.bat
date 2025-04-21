@@ -10,6 +10,3 @@ helm upgrade istio-base istio/base -n istio-system --set defaultRevision=default
 helm upgrade istiod istio/istiod -n istio-system --install
 kubectl create namespace apps
 kubectl label namespace apps istio-injection=enabled
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-helm repo update
-helm upgrade nginx-ingress ingress-nginx/ingress-nginx --install --namespace ingress --create-namespace --set controller.replicaCount=1 --set controller.metrics.enabled=true --set controller.extraArgs.metrics-per-host=false
