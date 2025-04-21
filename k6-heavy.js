@@ -18,7 +18,7 @@ export const options = {
 };
 
 export default function () {
-  const res = http.get('http://172.24.177.186:31319/heavy');
+  const res = http.get('http://localhost/heavy');
   check(res, {
     'status is 200': (r) => r.status === 200,
   });

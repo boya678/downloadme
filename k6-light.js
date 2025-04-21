@@ -5,17 +5,17 @@ export const options = {
   scenarios: {
     constant_rate: {
       executor: 'constant-arrival-rate',
-      rate: 5000, // 50 solicitudes por segundo
+      rate: 3000, // 50 solicitudes por segundo
       timeUnit: '1s',
       duration: '30s',
-      preAllocatedVUs: 10,
-      maxVUs: 5000,
+      preAllocatedVUs: 15000,
+      maxVUs: 15000,
     },
   },
 };
 
 export default function () {
-  const res = http.get('http://172.24.177.186:31319/light');
+  const res = http.get('http://localhost/light');
   check(res, {
     'status is 200': (r) => r.status === 200,
   });
