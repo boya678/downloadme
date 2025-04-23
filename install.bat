@@ -10,3 +10,4 @@ helm upgrade istio-base istio/base -n istio-system --set defaultRevision=default
 helm upgrade istiod istio/istiod -n istio-system --install
 kubectl create namespace apps
 kubectl label namespace apps istio-injection=enabled
+kubectl patch service traefik -n kube-system --type=json -p="[{\"op\":\"add\",\"path\":\"/spec/ports/-\",\"value\":{\"name\":\"metrics\",\"port\":9100,\"targetPort\":9100}}]"

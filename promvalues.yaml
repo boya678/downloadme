@@ -4607,24 +4607,11 @@ prometheus:
   #    verbs: [ "get", "list", "watch" ]
 
   additionalServiceMonitors:
-    - name: ingress
-      jobLabel: ingress
-      endpoints:
-      - interval: 10s
-        port: metrics
-      namespaceSelector:
-        matchNames:
-        - ingress
-      selector:
-        matchLabels:
-          app.kubernetes.io/component: controller
-          app.kubernetes.io/instance: nginx-ingress
-          app.kubernetes.io/name: ingress-nginx
     - name: traefik
       jobLabel: traefik
       endpoints:
       - interval: 10s
-        port: web
+        port: metrics
       namespaceSelector:
         matchNames:
         - kube-system
