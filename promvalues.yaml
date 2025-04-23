@@ -4624,7 +4624,7 @@ prometheus:
       jobLabel: traefik
       endpoints:
       - interval: 10s
-        port: metrics
+        port: web
       namespaceSelector:
         matchNames:
         - kube-system
