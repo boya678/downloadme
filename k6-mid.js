@@ -12,6 +12,9 @@ export const options = {
       maxVUs: 500,
     },
   },
+  tags: {
+    testid: 'mid-load-' + new Date().toISOString(), // <--- aquí defines el test ID
+  },
 };
 
 export default function () {

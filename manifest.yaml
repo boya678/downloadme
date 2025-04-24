@@ -33,6 +33,13 @@ spec:
   rules:
     - http:
         paths:
+          - path: /hostname
+            pathType: Prefix
+            backend:
+              service:
+                name: sistedemo
+                port:
+                  number: 3000
           - path: /mid
             pathType: Prefix
             backend:

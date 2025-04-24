@@ -13,7 +13,7 @@ export const options = {
     },
   },
   tags: {
-    testid: 'heavy-load-001', // <--- aquí defines el test ID
+    testid: 'heavy-load-' + new Date().toISOString(), // <--- aquí defines el test ID
   },
 };
 
