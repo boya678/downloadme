@@ -1,7 +1,12 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, group } from 'k6';
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import { textSummary } from "https://jslib.k6.io/k6-summary/0.0.1/index.js";
+import { Trend } from 'k6/metrics';
+
+const light = new Trend('light');
+const mid = new Trend('mid');
+const heavy = new Trend('heavy');
 
 const now = new Date().toISOString().replace(/[:.]/g, '-');
 
@@ -22,14 +27,32 @@ export const options = {
     },
   },
   tags: {
-    testid: 'light-load-' + now, // <--- aquí defines el test ID
+    testid: 'all-load-' + now, // <--- aquí defines el test ID
   },
 };
 
 export default function () {
-  const res = http.get('http://localhost/light');
-  check(res, {
-    'status is 200': (r) => r.status === 200,
+  group('light', function () {
+    var res = http.get('http://localhost/light', { tags: { name: "light" } });
+    check(res, {
+      'status is 200': (res) => res.status === 200,
+    });
+    light.add(res.timings.duration, { name: "light" })
+  });
+
+  group('mid', function () {
+    var res = http.get('http://localhost/mid', { tags: { name: "mid" } });
+    check(res, {
+      'status is 200': (res) => res.status === 200,
+    });
+    mid.add(res.timings.duration, { name: "mid" })
+  });
+  group('heavy', function () {
+    var res = http.get('http://localhost/heavy', { tags: { name: "heavy" } });
+    check(res, {
+      'status is 200': (res) => res.status === 200,
+    });
+    heavy.add(res.timings.duration, { name: "heavy" })
   });
 }
 
@@ -39,3 +62,4 @@ export function handleSummary(data) {
     stdout: textSummary(data, { indent: " ", enableColors: true })
   };
 }
+

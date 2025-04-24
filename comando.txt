@@ -4,6 +4,13 @@ minikube start --driver=hyperv --cpus=4 --memory=8192 --container-runtime=contai
 kubectl port-forward services/nginx-ingress-ingress-nginx-controller 8080:80 8443:443 -n ingress
 
 
-SET K6_PROMETHEUS_REMOTE_URL=http://172.24.177.186:31319/api/v1/write && k6 run k6-heavy.js
+$env:K6_PROMETHEUS_RW_TREND_STATS = "p(90),p(95),p(99),min,max,med,avg"
+$env:K6_PROMETHEUS_RW_SERVER_URL = "http://localhost/api/v1/write"
 
-$env:K6_PROMETHEUS_RW_TREND_STATS="p(90),p(95),p(99),min,max" ;$env:K6_PROMETHEUS_RW_SERVER_URL = "http://localhost/api/v1/write"; k6 run -o experimental-prometheus-rw k6-light.js
+k6 run -o experimental-prometheus-rw k6-light.js
+k6 run -o experimental-prometheus-rw k6-mid.js
+k6 run -o experimental-prometheus-rw k6-heavy.js
+k6 run -o experimental-prometheus-rw k6-all.js
+   
+
+$env:K6_PROMETHEUS_RW_TREND_STATS="p(90),p(95),p(99),min,max,med,avg" ;$env:K6_PROMETHEUS_RW_SERVER_URL = "http://localhost/api/v1/write"; k6 run -o experimental-prometheus-rw k6-all.js
