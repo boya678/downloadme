@@ -35,7 +35,7 @@ export default function () {
 
 export function handleSummary(data) {
   return {
-    [`reporte-all-${now}.html`]: htmlReport(data),
+    [`reporte-mid-${now}.html`]: htmlReport(data),
     stdout: textSummary(data, { indent: " ", enableColors: true })
   };
 }
