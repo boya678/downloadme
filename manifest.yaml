@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
         - name: sistedemo
-          image: tevolvers/sistedemo:1.5
+          image: tevolvers/sistedemo:2.0
           ports:
             - containerPort: 3000
           env:
