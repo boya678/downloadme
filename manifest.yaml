@@ -84,7 +84,7 @@ spec:
             - containerPort: 3000
           env:
           - name: OBJECT_COUNT
-            value: "250000"
+            value: "100000"
           # resources:
           #   requests:
           #     memory: 128Mi
