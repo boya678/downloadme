@@ -1,0 +1,44 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  namespace: apps
+  name: sistemo
+  annotations:
+    scaledobject.keda.sh/transfer-hpa-ownership: "false" # Optional. Use to transfer an existing HPA ownership to this ScaledObject
+    validations.keda.sh/hpa-ownership: "false" # Optional. Use to disable HPA ownership validation on this ScaledObject
+    autoscaling.keda.sh/paused: "false" # Optional. Use to pause autoscaling of objects explicitly
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1 # Optional. Default: apps/v1
+    kind: Deployment # Optional. Default: Deployment
+    name: sistedemo # Mandatory. Must be in the same namespace as the ScaledObject
+  pollingInterval: 5 # Optional. Default: 30 seconds
+  cooldownPeriod: 5 # Optional. Default: 300 seconds
+  minReplicaCount: 1 # Optional. Default: 0
+  maxReplicaCount: 4 # Optional. Default: 100
+  # fallback: # Optional. Section to specify fallback options
+  #   failureThreshold: 3 # Mandatory if fallback section is included
+  #   replicas: 6 # Mandatory if fallback section is included
+  advanced: # Optional. Section to specify advanced options
+    horizontalPodAutoscalerConfig: # Optional. Section to specify HPA related options
+      behavior: # Optional. Use to modify HPA's scaling behavior
+        scaleDown:
+          stabilizationWindowSeconds: 60
+          policies:
+            - type: Percent
+              value: 25
+              periodSeconds: 15
+  triggers:
+  - type: prometheus
+    metadata:
+      metricName: istio_requests_total
+      threshold: "5"
+      query: |
+        sum(rate(
+          istio_requests_total{destination_workload="sistedemo",
+          destination_workload_namespace="apps"}[1m]
+          ))/
+        count(count(
+          container_memory_usage_bytes{namespace="apps",pod=~"sistedemo.*"}
+        ) by (pod))
+      serverAddress: http://prometheus-stack-kube-prom-prometheus.monitoring:9090

@@ -14,10 +14,8 @@ export const options = {
       preAllocatedVUs: 50,
       maxVUs: 1500,
       stages: [
-        { target: 10, duration: '30s' },  // sube a 10 req/s en 30 segundos
-        { target: 20, duration: '30s' },  // sube a 20 req/s
-        { target: 30, duration: '30s' },  // sube a 30 req/s
-        { target: 0, duration: '30s' },   // baja a 0 para terminar
+        { target: 1, duration: '1s' },  // sube a 10 req/s en 30 segundos
+        { target: 1, duration: '60s' },  // sube a 20 req/snar
       ],
     },
   },
