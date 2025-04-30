@@ -10,4 +10,6 @@ helm upgrade istio-base istio/base -n istio-system --set defaultRevision=default
 helm upgrade istiod istio/istiod -n istio-system --install --values istiovalues.yaml
 kubectl create namespace apps
 kubectl label namespace apps istio-injection=enabled
-kubectl patch service traefik -n kube-system --type=json -p="[{\"op\":\"add\",\"path\":\"/spec/ports/-\",\"value\":{\"name\":\"metrics\",\"port\":9100,\"targetPort\":9100}}]"
+kubectl patch service traefik -n kube-system --type=json -p="[{\"op\":\"add\",\"path\":\"/spec/ports/-\",\"value\":{\"name\":\"metrics\",\"port\":9100,\"targetPort\":9100}}]" || exit /b 0
+helm repo update
+helm upgrade nginx-ingress ingress-nginx/ingress-nginx --install --namespace ingress --create-namespace --set controller.replicaCount=1 --set controller.metrics.enabled=true --set controller.extraArgs.metrics-per-host=false
